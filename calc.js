@@ -1,20 +1,61 @@
 "use strict";
 
-// function getParameterByName(name) {
-//     name = name.replace(/[\[\]]/g, "\\$&");
-//     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-//         results = regex.exec(window.location.href);
-//     if (!results) return null;
-//     if (!results[2]) return '';
-//     return decodeURIComponent(results[2].replace(/\+/g, " "));
-// }
+function getParameterByName(name) {
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(window.location.href);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
-function updateShare() {
-  let form = byId("fwd");
-  let data = new FormData(form);
-  let queryString = new URLSearchParams(data).toString();
-
-  console.log("Serialized form: " + queryString);
+function handleShareClick(event) {
+  event.preventDefault();
+  const formId = event.currentTarget.getAttribute('data-form');
+  const form = document.getElementById(formId);
+  
+  // Create object to store form data
+  const formData = {
+    calculator: formId
+  };
+  
+  // Get all inputs
+  const inputs = form.querySelectorAll('input');
+  inputs.forEach(input => {
+    // Only include radio buttons if checked
+    if (input.type === 'radio') {
+      if (input.checked) {
+        formData['freq'] = input.value;
+      }
+    } else if (input.value) {
+      // Extract field name without prefix
+      const fieldName = input.id.split('.')[1];
+      formData[fieldName] = input.value;
+    }
+  });
+  
+  // Base64 encode the data
+  const encodedData = btoa(JSON.stringify(formData));
+  
+  // Create the share URL with a single 's' parameter
+  // Handle file:// protocol specially (when origin is null)
+  let shareUrl;
+  if (window.location.protocol === 'file:') {
+    // For file:// URLs, use the full pathname
+    shareUrl = `file://${window.location.pathname}?s=${encodedData}`;
+  } else {
+    // For http/https, use origin + pathname
+    shareUrl = `${window.location.origin}${window.location.pathname}?s=${encodedData}`;
+  }
+  
+  // Copy to clipboard
+  navigator.clipboard.writeText(shareUrl).then(() => {
+    alert("Shareable link copied to clipboard!");
+  }).catch(err => {
+    console.error('Could not copy link: ', err);
+    // Fallback - show the URL to the user
+    prompt("Copy this link to share your calculation:", shareUrl);
+  });
 }
 
 function getAddFreqN(add_frequency_name) {
@@ -60,7 +101,6 @@ function updateFwd() {
     }
   }
   updateAmount('fwd', amount);
-  updateShare();
 }
 
 function updateBwd() {
@@ -147,16 +187,139 @@ function doBind(id, radioId, action) {
   }
 }
 
-//function handleIncomingParams(params) {
-//    var p = getParametersByName('fwd')
-// TODO:  Set the form fields if there are URL query fields present.
-//}
-
+function handleIncomingParams() {
+  // Get all URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // Check if we have the 's' parameter for base64 encoded data
+  const encodedData = urlParams.get('s');
+  if (encodedData) {
+    try {
+      // Decode base64 data
+      const jsonData = atob(encodedData);
+      const data = JSON.parse(jsonData);
+      
+      // Extract calculator type
+      const calculator = data.calculator;
+      if (calculator) {
+        // Populate form fields
+        Object.keys(data).forEach(key => {
+          if (key === 'calculator') return;
+          
+          if (key === 'freq') {
+            // Handle radio buttons
+            const radio = document.querySelector(`input[name="${calculator}.freq"][value="${data[key]}"]`);
+            if (radio) radio.checked = true;
+          } else {
+            // Handle regular inputs
+            const input = document.getElementById(`${calculator}.${key}`);
+            if (input) input.value = data[key];
+          }
+        });
+        
+        // Run the appropriate calculation
+        if (calculator === 'fwd') updateFwd();
+        if (calculator === 'bwd') updateBwd();
+        if (calculator === 'contrib') updateContrib();
+        if (calculator === 'int') updateInt();
+        
+        // Scroll to the relevant calculator
+        const divId = 'div' + calculator.charAt(0).toUpperCase() + calculator.slice(1);
+        const div = document.getElementById(divId);
+        if (div) {
+          // Smooth scroll to the element
+          div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          
+          // Focus the first input in this form
+          const firstInput = div.querySelector('input:not([type="radio"])');
+          if (firstInput) {
+            setTimeout(() => { 
+              firstInput.focus();
+              // Optional: select the text for easy editing
+              firstInput.select();
+            }, 500); // Short delay to allow smooth scrolling to complete
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error parsing shared data:', e);
+    }
+    return;
+  }
+  
+  // Original parameter handling (for non-base64 URLs)
+  const formParams = {};
+  for (const [key, value] of urlParams.entries()) {
+    const parts = key.split('.');
+    if (parts.length !== 2) continue;
+    
+    const form = parts[0];
+    const param = parts[1];
+    
+    if (!formParams[form]) {
+      formParams[form] = {};
+    }
+    formParams[form][param] = value;
+  }
+  
+  // Apply parameters to each form
+  for (const form in formParams) {
+    const params = formParams[form];
+    
+    for (const param in params) {
+      if (param === 'freq') {
+        // Handle radio buttons
+        const radio = document.querySelector(`input[name="${form}.freq"][value="${params[param]}"]`);
+        if (radio) {
+          radio.checked = true;
+        }
+      } else {
+        // Handle standard inputs
+        const element = byId(`${form}.${param}`);
+        if (element) {
+          element.value = params[param];
+        }
+      }
+    }
+    
+    // Run the appropriate calculation
+    if (form === 'fwd') updateFwd();
+    else if (form === 'bwd') updateBwd();
+    else if (form === 'contrib') updateContrib();
+    else if (form === 'int') updateInt();
+    
+    // Scroll to the relevant calculator
+    const divId = 'div' + form.charAt(0).toUpperCase() + form.slice(1);
+    const div = document.getElementById(divId);
+    if (div) {
+      // Smooth scroll to the element
+      div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Focus the first input in this form
+      const firstInput = div.querySelector('input:not([type="radio"])');
+      if (firstInput) {
+        setTimeout(() => { 
+          firstInput.focus();
+          // Optional: select the text for easy editing
+          firstInput.select();
+        }, 500); // Short delay to allow smooth scrolling to complete
+      }
+    }
+  }
+}
 
 document.addEventListener("DOMContentLoaded", (function() {
   doBind('#fwd', 'fwd.freq', updateFwd);
   doBind('#bwd', 'bwd.freq', updateBwd);
   doBind('#contrib', 'contrib.freq', updateContrib);
   doBind('#int', 'int.freq', updateInt);
-  //			  handleIncomingParams();
+  
+  // Add event listeners to share links
+  const shareLinks = document.querySelectorAll('.share-link');
+  for (let i = 0; i < shareLinks.length; i++) {
+    shareLinks[i].addEventListener('click', handleShareClick);
+  }
+  
+  // Handle incoming parameters if any
+  handleIncomingParams();
 }));
