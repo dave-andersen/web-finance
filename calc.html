@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <title>Mobile-Friendly Compound Interest Calculators</title>
+  <meta name="description" content="">
+  <meta name="author" content="David G. Andersen">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns" style="margin-top: 1%">
+        <h3>Compound Interest Calculators</h3>
+        <p>Calculate compound interest in four ways:  <b>Forward</b> starts from a given balance and goes forward in time. <b>Backward</b> computes the required initial deposit to reach a target goal in X years with no extra additions.  <b>Contribution</b> determines how much you must contribute each week/month/year to meet a retirement goal.  <b>Achieved interest</b> determines the retrospective interest rate you achieved in going from a starting to an ending amount over a certain amount of time (or calculates the rate you must achieve to do so).</p>
+
+<ul>
+<li>Compounding occurs with the same frequency as the &quot;contribution frequency&quot;.</li>
+<li> You can leave the regular contribution amount empty.</li>
+<li>Contributions happen at the end of each period.</li>
+</ul>
+	</div>
+    <div class="row" style="margin-top: 3%">
+
+
+	<div class="six columns" id="divFwd">
+
+	<h4>Forward Compound Interest</h4>
+	<form id="fwd">
+	<fieldset>
+	<label for="fwd.start">Starting Amount</label>
+	<input type="number" name="fwd.start" id="fwd.start" />
+	<label for="fwd.add">Regular Contribution</label>
+	<input type="number" name="fwd.add" id="fwd.add">
+	<label for="fwd.freq">Contribute+compounding frequency<br />
+	<input type="radio" name="fwd.freq" value="weekly" id="weekly"/> 
+	<span class="label-body">Weekly</span>
+	<input type="radio" name="fwd.freq" value="monthly" id="monthly" />
+	<span class="label-body">Monthly</span>
+	<input type="radio" name="fwd.freq" value="yearly" id="yearly" checked />
+	<span class="label-body">Yearly</span>
+	</label>
+
+	<label for="fwd.interest">Interest Rate (%):
+	<input type="number" id="fwd.interest" name="fwd.interest" min="0" max="100" value="6.5">
+	</label>
+	<label for="fwd.years">Years:
+	<input type="number" name="fwd.years" id="fwd.years" min="0" max="1000">
+	</label>
+	</fieldset>
+	<span>Amount at end: </span>
+	<span id="fwd.amount" class="result"></span>
+	</form>
+	</div>
+
+	<div class="six columns" id="divBack">
+	<h4>Backward Compound Interest - No Addition</h4>
+	<p>Calculate the amount of money you need to start with in order to achieve a target goal.</p>
+	<form id="bwd">
+	<fieldset>
+	<label for="bwd.end">Ending Amount</label>
+	<input type="number" name="bwd.end" id="bwd.end">
+	<label for="bwd.freq">Compounding frequency<br />
+	<input type="radio" name="bwd.freq" value="weekly" id="weekly"/> 
+	<span class="label-body">Weekly</span>
+	<input type="radio" name="bwd.freq" value="monthly" id="monthly" />
+	<span class="label-body">Monthly</span>
+	<input type="radio" name="bwd.freq" value="yearly" id="yearly" checked />
+	<span class="label-body">Yearly</span>
+	</label>
+	<label for="bwd.interest">Interest Rate (%):
+	<input type="number" id="bwd.interest" name="bwd.interest" min="0" max="100" value="6.5">
+	</label>
+	<label for="bwd.years">Years:
+	<input type="number" name="bwd.years" id="bwd.years" min="0" max="1000">
+	</label>
+	</fieldset>
+	<span>Amount required at start: </span>
+	<span id="bwd.amount" class="result"></span>
+	</form>
+	</div>
+    </div>
+    <div class="row" style="margin-top: 3%">
+
+	<div class="six columns" id="divAmount">
+	<h4>Regular contribution required for target</h4>
+	<p>Calculate the amount of money you must periodically add to achieve a target goal.</p>
+
+	<form id="contrib">
+	<fieldset>
+	<label for="contrib.end">Ending Amount</label>
+	<input type="number" name="contrib.end" id="contrib.end">
+	<label for="contrib.start">Starting Amount</label>
+	<input type="number" name="contrib.start" id="contrib.start">
+	<label for="contrib.freq">Contribute+compounding frequency<br />
+	<input type="radio" name="contrib.freq" value="weekly" id="weekly"/> 
+	<span class="label-body">Weekly</span>
+	<input type="radio" name="contrib.freq" value="monthly" id="monthly" />
+	<span class="label-body">Monthly</span>
+	<input type="radio" name="contrib.freq" value="yearly" id="yearly" checked />
+	<span class="label-body">Yearly</span>
+	</label>
+	<label for="interest">Interest Rate (%):
+	<input type="number" id="contrib.interest" name="interest" min="0" max="100" value="6.5">
+	</label>
+	<label for="years">Years
+	<input type="number" name="years" id="contrib.years" min="0" max="1000">
+	</label>
+	</fieldset>
+	<span>Periodic contribution required: </span>
+	<span id="contrib.amount" class="result"></span>
+	</form>
+
+      </div>
+
+	<div class="six columns" id="divInt">
+	<h4>Achieved or Required Interest Rate</h4>
+	<p>Given a starting and ending balance, with optional regular contributions, calculate the interest rate achieved or required to reach the ending balance.</p>
+
+	<form id="int">
+	<fieldset>
+	<label for="int.end">Ending Amount</label>
+	<input type="number" name="int.end" id="int.end">
+	<label for="int.start">Starting Amount</label>
+	<input type="number" name="int.start" id="int.start">
+	<label for="int.add">Regular Contribution</label>
+	<input type="number" name="int.add" id="int.add">
+	<label for="int.freq">Contribute+compounding frequency<br />
+	<input type="radio" name="int.freq" value="weekly" id="weekly"/> 
+	<span class="label-body">Weekly</span>
+	<input type="radio" name="int.freq" value="monthly" id="monthly" />
+	<span class="label-body">Monthly</span>
+	<input type="radio" name="int.freq" value="yearly" id="yearly" checked />
+	<span class="label-body">Yearly</span>
+	</label>
+	<label for="years">Years
+	<input type="number" name="years" id="int.years" min="0" max="1000">
+	</label>
+	</fieldset>
+	<span>Achieved interest rate: </span>
+	<span id="int.amount" class="result"></span>
+	</form>
+
+      </div>
+
+
+    </div>
+
+    <div class="row">
+      <div class="twelve columns" style="margin-top: 1%">
+        <h3>How Compound Interest is Calculated</h3>
+	<p>Interest &quot;compounds&quot; each time you earn interest on your money and that interest is added to your account.  For example, if you have $100 in the bank and earn 5% interest compounded yearly, then after one year, your bank will deposit an extra $5 in your account.  You now have $105.  After the end of the next year, you will have $105*1.05 = $110.25, having earned 5% of $105, or $5.25.  Naturally, if the interest rates are equal, you'd prefer an account that compounds more frequently.  When you take into account the compounding, you get what's referred to as the &quot;<b>APY</b>&quot;, or &quot;Annual Percentage Yield&quot;.  An account that compounds yearly will have an APY equal to its interest rate, but one that compounds more frequently will have a higher APY.</p>
+
+	<p>The most basic way to calculate compound interest would be to simply do it by hand.  If you have an initial amount:
+	<blockquote><tt>Balance = $100</tt></blockquote>
+        and add 5%, you get:
+        <blockquote><tt>Balance = $100 + (100 * 0.05)</tt><br />
+              Which is the same as:<br />  <tt>Balance = $100 * 1 + $100 * .05</tt><br />
+              <tt>= $100 * 1.05</tt>
+        </blockquote>
+        Generalizing that, applying the interest is simply <tt>Balance = Balance * (1 + interest_rate)</tt></p>
+
+	<p>Of course, the interest rate is expressed <i>yearly</i>, so if we want to apply it more frequently -- say, daily -- we have to
+        divide it by the fraction of the year that has passed.  The daily interest rate is just <tt>1/365</tt> of the yearly interest
+        rate.  So each day, we would do <tt>Balance = Balance * (1 + interest_rate / 365)</tt>.</p>
+
+	<p>But doing that 365 times would be tedious.  To simplify that, we note that we're just doing that
+         multiplication 365 times per year.  Which we could express as <tt>(1 + interest_rate / 365)</tt> raised to the power of 365.
+        So one year of daily compound interest is thus:
+        <blockquote><tt>Balance = Balance * (1 + interest_rate / 365)<sup>365</sup></tt>.</blockquote>
+	And that's it for basic compounding.  Thus, a 5% interest rate, compounded daily, would result in a
+        <tt>(1 + 0.05/365)<sup>365</sup> = 5.127%</tt> APY.
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 2%;">
+	<div class="twelve columns">
+	<h4>More on angio.net</h4>
+	<ul>
+		<li><a href="/pi/piquery.html">Find your birthday in Pi</a></li>
+		<li><a href="/personal/climb/speed.html">The Splat Calculator</a> (free-fall velocity)</li>
+	</ul>
+	</div>
+	</div>
+   <div class="row" style="margin-top: 2%;">
+   <div class="twelve columns">
+<p>Code and page Copyright &copy;2016 David G. Andersen.  Please send bug or feedback reports to <tt>dga AT pobox DOT com</tt>.</p>
+   </div>
+   </div>
+</div>
+
+<script src="calc.js">
+</script>
+
+</body>
+</html>
