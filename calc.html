@@ -27,126 +27,126 @@
     <div class="row" style="margin-top: 3%">
 
 
-	<div class="six columns" id="divFwd">
+	<div class="six columns" id="div_f">
 
 	<h4>Forward Compound Interest</h4>
-	<form id="fwd">
+	<form id="f">
 	<fieldset>
-	<label for="fwd.start">Starting Amount</label>
-	<input type="number" name="fwd.start" id="fwd.start" />
-	<label for="fwd.add">Regular Contribution</label>
-	<input type="number" name="fwd.add" id="fwd.add">
-	<label for="fwd.freq">Contribute+compounding frequency<br />
-	<input type="radio" name="fwd.freq" value="weekly" id="weekly"/> 
+	<label for="f.s">Starting Amount</label>
+	<input type="number" name="f.s" id="f.s" />
+	<label for="f.a">Regular Contribution</label>
+	<input type="number" name="f.a" id="f.a">
+	<label for="f.f">Contribute+compounding frequency<br />
+	<input type="radio" name="f.f" value="weekly" id="weekly"/> 
 	<span class="label-body">Weekly</span>
-	<input type="radio" name="fwd.freq" value="monthly" id="monthly" />
+	<input type="radio" name="f.f" value="monthly" id="monthly" />
 	<span class="label-body">Monthly</span>
-	<input type="radio" name="fwd.freq" value="yearly" id="yearly" checked />
-	<span class="label-body">Yearly</span>
+	<input type="radio" name="f.f" value="yearly" id="yearly" checked />
+	<span class="label-body">Yearly</span> 
 	</label>
 
-	<label for="fwd.interest">Interest Rate (%):
-	<input type="number" id="fwd.interest" name="fwd.interest" min="0" max="100" value="6.5">
+	<label for="f.i">Interest Rate (%):
+	<input type="number" id="f.i" name="f.i" min="0" max="100" value="6.5">
 	</label>
-	<label for="fwd.years">Years:
-	<input type="number" name="fwd.years" id="fwd.years" min="0" max="1000">
+	<label for="f.y">Years:
+	<input type="number" name="f.y" id="f.y" min="0" max="1000">
 	</label>
 	</fieldset>
 	<span>Amount at end: </span>
-	<span id="fwd.amount" class="result"></span>
-	<div><a href="#" class="share-link" data-form="fwd">Share this calculation</a></div>
+	<span id="f.amount" class="result"></span>
+	<div><a href="#" class="share-link" data-form="f">Share this calculation</a></div>
 	</form>
 	</div>
 
-	<div class="six columns" id="divBack">
+	<div class="six columns" id="div_b">
 	<h4>Backward Compound Interest - No Addition</h4>
 	<p>Calculate the amount of money you need to start with in order to achieve a target goal.</p>
-	<form id="bwd">
+	<form id="b">
 	<fieldset>
-	<label for="bwd.end">Ending Amount</label>
-	<input type="number" name="bwd.end" id="bwd.end">
-	<label for="bwd.freq">Compounding frequency<br />
-	<input type="radio" name="bwd.freq" value="weekly" id="weekly"/> 
+	<label for="b.e">Ending Amount</label>
+	<input type="number" name="b.e" id="b.e">
+	<label for="b.f">Compounding frequency<br />
+	<input type="radio" name="b.f" value="weekly" id="weekly"/> 
 	<span class="label-body">Weekly</span>
-	<input type="radio" name="bwd.freq" value="monthly" id="monthly" />
+	<input type="radio" name="b.f" value="monthly" id="monthly" />
 	<span class="label-body">Monthly</span>
-	<input type="radio" name="bwd.freq" value="yearly" id="yearly" checked />
+	<input type="radio" name="b.f" value="yearly" id="yearly" checked />
 	<span class="label-body">Yearly</span>
 	</label>
-	<label for="bwd.interest">Interest Rate (%):
-	<input type="number" id="bwd.interest" name="bwd.interest" min="0" max="100" value="6.5">
+	<label for="b.i">Interest Rate (%):
+	<input type="number" id="b.i" name="b.i" min="0" max="100" value="6.5">
 	</label>
-	<label for="bwd.years">Years:
-	<input type="number" name="bwd.years" id="bwd.years" min="0" max="1000">
+	<label for="b.y">Years:
+	<input type="number" name="b.y" id="b.y" min="0" max="1000">
 	</label>
 	</fieldset>
 	<span>Amount required at start: </span>
-	<span id="bwd.amount" class="result"></span>
-	<div><a href="#" class="share-link" data-form="bwd">Share this calculation</a></div>
+	<span id="b.amount" class="result"></span>
+	<div><a href="#" class="share-link" data-form="b">Share this calculation</a></div>
 	</form>
 	</div>
     </div>
     <div class="row" style="margin-top: 3%">
 
-	<div class="six columns" id="divAmount">
+	<div class="six columns" id="div_c">
 	<h4>Regular contribution required for target</h4>
 	<p>Calculate the amount of money you must periodically add to achieve a target goal.</p>
 
-	<form id="contrib">
+	<form id="c">
 	<fieldset>
-	<label for="contrib.end">Ending Amount</label>
-	<input type="number" name="contrib.end" id="contrib.end">
-	<label for="contrib.start">Starting Amount</label>
-	<input type="number" name="contrib.start" id="contrib.start">
-	<label for="contrib.freq">Contribute+compounding frequency<br />
-	<input type="radio" name="contrib.freq" value="weekly" id="weekly"/> 
+	<label for="c.e">Ending Amount</label>
+	<input type="number" name="c.e" id="c.e">
+	<label for="c.s">Starting Amount</label>
+	<input type="number" name="c.s" id="c.s">
+	<label for="c.f">Contribute+compounding frequency<br />
+	<input type="radio" name="c.f" value="weekly" id="weekly"/> 
 	<span class="label-body">Weekly</span>
-	<input type="radio" name="contrib.freq" value="monthly" id="monthly" />
+	<input type="radio" name="c.f" value="monthly" id="monthly" />
 	<span class="label-body">Monthly</span>
-	<input type="radio" name="contrib.freq" value="yearly" id="yearly" checked />
+	<input type="radio" name="c.f" value="yearly" id="yearly" checked />
 	<span class="label-body">Yearly</span>
 	</label>
 	<label for="interest">Interest Rate (%):
-	<input type="number" id="contrib.interest" name="interest" min="0" max="100" value="6.5">
+	<input type="number" id="c.i" name="interest" min="0" max="100" value="6.5">
 	</label>
 	<label for="years">Years
-	<input type="number" name="years" id="contrib.years" min="0" max="1000">
+	<input type="number" name="years" id="c.y" min="0" max="1000">
 	</label>
 	</fieldset>
 	<span>Periodic contribution required: </span>
-	<span id="contrib.amount" class="result"></span>
-	<div><a href="#" class="share-link" data-form="contrib">Share this calculation</a></div>
+	<span id="c.amount" class="result"></span>
+	<div><a href="#" class="share-link" data-form="c">Share this calculation</a></div>
 	</form>
 
       </div>
 
-	<div class="six columns" id="divInt">
+	<div class="six columns" id="div_i">
 	<h4>Achieved or Required Interest Rate</h4>
 	<p>Given a starting and ending balance, with optional regular contributions, calculate the interest rate achieved or required to reach the ending balance.</p>
 
-	<form id="int">
+	<form id="i">
 	<fieldset>
-	<label for="int.end">Ending Amount</label>
-	<input type="number" name="int.end" id="int.end">
-	<label for="int.start">Starting Amount</label>
-	<input type="number" name="int.start" id="int.start">
-	<label for="int.add">Regular Contribution</label>
-	<input type="number" name="int.add" id="int.add">
-	<label for="int.freq">Contribute+compounding frequency<br />
-	<input type="radio" name="int.freq" value="weekly" id="weekly"/> 
+	<label for="i.e">Ending Amount</label>
+	<input type="number" name="i.e" id="i.e">
+	<label for="i.s">Starting Amount</label>
+	<input type="number" name="i.s" id="i.s">
+	<label for="i.a">Regular Contribution</label>
+	<input type="number" name="i.a" id="i.a">
+	<label for="i.f">Contribute+compounding frequency<br />
+	<input type="radio" name="i.f" value="weekly" id="weekly"/> 
 	<span class="label-body">Weekly</span>
-	<input type="radio" name="int.freq" value="monthly" id="monthly" />
+	<input type="radio" name="i.f" value="monthly" id="monthly" />
 	<span class="label-body">Monthly</span>
-	<input type="radio" name="int.freq" value="yearly" id="yearly" checked />
+	<input type="radio" name="i.f" value="yearly" id="yearly" checked />
 	<span class="label-body">Yearly</span>
 	</label>
 	<label for="years">Years
-	<input type="number" name="years" id="int.years" min="0" max="1000">
+	<input type="number" name="years" id="i.y" min="0" max="1000">
 	</label>
 	</fieldset>
 	<span>Achieved interest rate: </span>
-	<span id="int.amount" class="result"></span>
-	<div><a href="#" class="share-link" data-form="int">Share this calculation</a></div>
+	<span id="i.amount" class="result"></span>
+	<div><a href="#" class="share-link" data-form="i">Share this calculation</a></div>
 	</form>
 
       </div>
@@ -156,7 +156,7 @@
 
     <div class="row">
       <div class="twelve columns" style="margin-top: 1%">
-        <h3>How Compound Interest is Calculated</h3>
+        <h3>How Compound interest is Calculated</h3>
 	<p>Interest &quot;compounds&quot; each time you earn interest on your money and that interest is added to your account.  For example, if you have $100 in the bank and earn 5% interest compounded yearly, then after one year, your bank will deposit an extra $5 in your account.  You now have $105.  After the end of the next year, you will have $105*1.05 = $110.25, having earned 5% of $105, or $5.25.  Naturally, if the interest rates are equal, you'd prefer an account that compounds more frequently.  When you take into account the compounding, you get what's referred to as the &quot;<b>APY</b>&quot;, or &quot;Annual Percentage Yield&quot;.  An account that compounds yearly will have an APY equal to its interest rate, but one that compounds more frequently will have a higher APY.</p>
 
 	<p>The most basic way to calculate compound interest would be to simply do it by hand.  If you have an initial amount:

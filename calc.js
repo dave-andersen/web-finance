@@ -16,10 +16,10 @@ function handleShareClick(event) {
   
   // Create object to store form data
   const formData = {
-    calculator: formId
+    cal: formId
   };
   
-  // Get all inputs
+  // Get all inputs within this specific form
   const inputs = form.querySelectorAll('input');
   inputs.forEach(input => {
     // Only include radio buttons if checked
@@ -28,21 +28,26 @@ function handleShareClick(event) {
         formData['freq'] = input.value;
       }
     } else if (input.value) {
-      // Extract field name without prefix
-      const fieldName = input.id.split('.')[1];
-      formData[fieldName] = input.value;
+      // Make sure the input belongs to this form by checking the ID
+      const parts = input.id.split('.');
+      if (parts.length === 2 && parts[0] === formId) {
+        const fieldName = parts[1];
+        formData[fieldName] = input.value;
+      }
     }
   });
   
   // Base64 encode the data
+  console.log("Form data: ", formData);
+  console.log(JSON.stringify(formData));
   const encodedData = btoa(JSON.stringify(formData));
   
   // Create the share URL with a single 's' parameter
-  // Handle file:// protocol specially (when origin is null)
   let shareUrl;
   if (window.location.protocol === 'file:') {
-    // For file:// URLs, use the full pathname
-    shareUrl = `file://${window.location.pathname}?s=${encodedData}`;
+    // For local file access, generate a proper file:// URL
+    const fullPath = window.location.pathname;
+    shareUrl = `file://${fullPath}?s=${encodedData}`;
   } else {
     // For http/https, use origin + pathname
     shareUrl = `${window.location.origin}${window.location.pathname}?s=${encodedData}`;
@@ -82,12 +87,12 @@ function updateAmount(calc, amount) {
 }
 
 function updateFwd() {
-  var start = byId("fwd.start").value;
-  var add = byId("fwd.add").value;
-  var cpp = getAddFreqN("fwd.freq");
+  var start = byId("f.s").value;
+  var add = byId("f.a").value;
+  var cpp = getAddFreqN("f.f");
 
-  var years = byId("fwd.years").value;
-  var interest = byId("fwd.interest").value;
+  var years = byId("f.y").value;
+  var interest = byId("f.i").value;
   var growFactor = Math.pow((1.0 + interest / (100.0 * cpp)), years * cpp);
   var amount = start * growFactor;
   if (add) {
@@ -100,28 +105,28 @@ function updateFwd() {
       amount += (add * years * cpp);
     }
   }
-  updateAmount('fwd', amount);
+  updateAmount('f', amount);
 }
 
 function updateBwd() {
-  var final = byId("bwd.end").value;
-  var years = byId("bwd.years").value;
-  var interest = byId("bwd.interest").value;
+  var final = byId("b.e").value;
+  var years = byId("b.y").value;
+  var interest = byId("b.i").value;
 
-  var cpp = getAddFreqN("bwd.freq");
+  var cpp = getAddFreqN("b.f");
   var expval = 1.0 + interest / (100.0 * cpp);
   var invexp = 1.0 / expval;
 
   var startamount = final * Math.pow(invexp, years * cpp);
-  updateAmount('bwd', startamount);
+  updateAmount('b', startamount);
 }
 
 function updateContrib() {
-  var final = byId("contrib.end").value;
-  var start = byId("contrib.start").value;
-  var cpp = getAddFreqN("contrib.freq");
-  var years = byId("contrib.years").value;
-  var interest = byId("contrib.interest").value;
+  var final = byId("c.e").value;
+  var start = byId("c.s").value;
+  var cpp = getAddFreqN("c.f");
+  var years = byId("c.y").value;
+  var interest = byId("c.i").value;
 
   var expval = 1.0 + interest / (100.0 * cpp);
   var invexp = 1.0 / expval;
@@ -136,15 +141,15 @@ function updateContrib() {
   }
 
   var add = final / ((growFactor - 1) / (interest / (100.0 * cpp)));
-  updateAmount('contrib', add);
+  updateAmount('c', add);
 }
 
 function updateInt() {
-  var finalAmount = byId("int.end").value;
-  var start = byId("int.start").value;
-  var add = byId("int.add").value;
-  var cpp = getAddFreqN("int.freq");
-  var years = byId("int.years").value;
+  var finalAmount = byId("i.e").value;
+  var start = byId("i.s").value;
+  var add = byId("i.a").value;
+  var cpp = getAddFreqN("i.f");
+  var years = byId("i.y").value;
 
   var projected = 0;
   var error = 99999;
@@ -170,8 +175,7 @@ function updateInt() {
       interest_hi = interest;
     }
   }
-
-  updateAmount('int', interest);
+  updateAmount('i', interest);  
 }
 
 var $ = document.querySelectorAll.bind(document);
@@ -200,7 +204,7 @@ function handleIncomingParams() {
       const data = JSON.parse(jsonData);
       
       // Extract calculator type
-      const calculator = data.calculator;
+      const calculator = data.cal;
       if (calculator) {
         // Populate form fields
         Object.keys(data).forEach(key => {
@@ -208,7 +212,7 @@ function handleIncomingParams() {
           
           if (key === 'freq') {
             // Handle radio buttons
-            const radio = document.querySelector(`input[name="${calculator}.freq"][value="${data[key]}"]`);
+            const radio = document.querySelector(`input[name="${calculator}.f"][value="${data[key]}"]`);
             if (radio) radio.checked = true;
           } else {
             // Handle regular inputs
@@ -218,13 +222,13 @@ function handleIncomingParams() {
         });
         
         // Run the appropriate calculation
-        if (calculator === 'fwd') updateFwd();
-        if (calculator === 'bwd') updateBwd();
-        if (calculator === 'contrib') updateContrib();
-        if (calculator === 'int') updateInt();
+        if (calculator === 'f') updateFwd();
+        if (calculator === 'b') updateBwd();
+        if (calculator === 'c') updateContrib();
+        if (calculator === 'i') updateInt();
         
         // Scroll to the relevant calculator
-        const divId = 'div' + calculator.charAt(0).toUpperCase() + calculator.slice(1);
+        const divId = 'div_' + calculator;
         const div = document.getElementById(divId);
         if (div) {
           // Smooth scroll to the element
@@ -269,7 +273,7 @@ function handleIncomingParams() {
     for (const param in params) {
       if (param === 'freq') {
         // Handle radio buttons
-        const radio = document.querySelector(`input[name="${form}.freq"][value="${params[param]}"]`);
+        const radio = document.querySelector(`input[name="${form}.f"][value="${params[param]}"]`);
         if (radio) {
           radio.checked = true;
         }
@@ -283,36 +287,18 @@ function handleIncomingParams() {
     }
     
     // Run the appropriate calculation
-    if (form === 'fwd') updateFwd();
-    else if (form === 'bwd') updateBwd();
-    else if (form === 'contrib') updateContrib();
-    else if (form === 'int') updateInt();
-    
-    // Scroll to the relevant calculator
-    const divId = 'div' + form.charAt(0).toUpperCase() + form.slice(1);
-    const div = document.getElementById(divId);
-    if (div) {
-      // Smooth scroll to the element
-      div.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      
-      // Focus the first input in this form
-      const firstInput = div.querySelector('input:not([type="radio"])');
-      if (firstInput) {
-        setTimeout(() => { 
-          firstInput.focus();
-          // Optional: select the text for easy editing
-          firstInput.select();
-        }, 500); // Short delay to allow smooth scrolling to complete
-      }
-    }
+    if (form === 'f') updateFwd();
+    else if (form === 'b') updateBwd();
+    else if (form === 'c') updateContrib();
+    else if (form === 'i') updateInt();
   }
 }
 
 document.addEventListener("DOMContentLoaded", (function() {
-  doBind('#fwd', 'fwd.freq', updateFwd);
-  doBind('#bwd', 'bwd.freq', updateBwd);
-  doBind('#contrib', 'contrib.freq', updateContrib);
-  doBind('#int', 'int.freq', updateInt);
+  doBind('#f', 'f.f', updateFwd);
+  doBind('#b', 'b.f', updateBwd);
+  doBind('#c', 'c.f', updateContrib);
+  doBind('#i', 'i.f', updateInt);
   
   // Add event listeners to share links
   const shareLinks = document.querySelectorAll('.share-link');
