@@ -18,8 +18,7 @@ function handleShareClick(event) {
     cal: formId
   };
   
-  const inputs = form.querySelectorAll('input');
-  inputs.forEach(input => {
+  for (const input of form.querySelectorAll('input')) {
     if (input.type === 'radio') {
       if (input.checked) {
         formData['freq'] = input.value;
@@ -31,9 +30,9 @@ function handleShareClick(event) {
         formData[fieldName] = input.value;
       }
     }
-  });
+  }
   
-  console.log(JSON.stringify(formData));
+  //console.log(JSON.stringify(formData));
   const encodedData = btoa(JSON.stringify(formData));
   
   let shareUrl;
@@ -54,13 +53,14 @@ function handleShareClick(event) {
 
 function getAddFreqN(add_frequency_name) {
   const add_frequency = document.querySelector('input[name="' + add_frequency_name + '"]:checked').value;
-  if (add_frequency == "monthly") {
-    return 12;
+  switch (add_frequency) {
+    case "monthly":
+      return 12;
+    case "weekly":
+      return 52;
+    default:
+      return 1;
   }
-  if (add_frequency == "weekly") {
-    return 52;
-  }
-  return 1;
 }
 
 var byId = function(id) {
@@ -171,9 +171,8 @@ function doBind(id, radioId, action) {
   $(id)[0].on('submit', action);
   $(id)[0].on('keyup', action);
   $(id)[0].on('mouseup', action);
-  let radioGuy = document.querySelectorAll('[name="' + radioId + '"]');
-  for (let i = 0; i < radioGuy.length; ++i) {
-    radioGuy[i].on('change', action);
+  for (const r of document.querySelectorAll('[name="' + radioId + '"]')) {
+    r.on('change', action);
   }
 }
 
@@ -234,9 +233,8 @@ document.addEventListener("DOMContentLoaded", (function() {
   doBind('#c', 'c.f', updateContrib);
   doBind('#i', 'i.f', updateInt);
   
-  const shareLinks = document.querySelectorAll('.share-link');
-  for (let i = 0; i < shareLinks.length; i++) {
-    shareLinks[i].addEventListener('click', handleShareClick);
+  for (const link of document.querySelectorAll('.share-link')) {
+    link.addEventListener('click', handleShareClick);
   }
   
   handleIncomingParams();
