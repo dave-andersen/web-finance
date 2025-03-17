@@ -234,12 +234,10 @@ document.addEventListener("DOMContentLoaded", (function() {
   doBind('#c', 'c.f', updateContrib);
   doBind('#i', 'i.f', updateInt);
   
-  // Add event listeners to share links
   const shareLinks = document.querySelectorAll('.share-link');
   for (let i = 0; i < shareLinks.length; i++) {
     shareLinks[i].addEventListener('click', handleShareClick);
   }
   
-  // Handle incoming parameters if any
   handleIncomingParams();
 }));
