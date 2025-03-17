@@ -159,7 +159,7 @@
         <h3>How Compound interest is Calculated</h3>
 	<p>Interest &quot;compounds&quot; each time you earn interest on your money and that interest is added to your account.  For example, if you have $100 in the bank and earn 5% interest compounded yearly, then after one year, your bank will deposit an extra $5 in your account.  You now have $105.  After the end of the next year, you will have $105*1.05 = $110.25, having earned 5% of $105, or $5.25.  Naturally, if the interest rates are equal, you'd prefer an account that compounds more frequently.  When you take into account the compounding, you get what's referred to as the &quot;<b>APY</b>&quot;, or &quot;Annual Percentage Yield&quot;.  An account that compounds yearly will have an APY equal to its interest rate, but one that compounds more frequently will have a higher APY.</p>
 
-	<p>The most basic way to calculate compound interest would be to simply do it by hand.  If you have an initial amount:
+	<p>The most basic way to calculate compound interest is do it by hand.  If you have an initial amount:
 	<blockquote><tt>Balance = $100</tt></blockquote>
         and add 5%, you get:
         <blockquote><tt>Balance = $100 + (100 * 0.05)</tt><br />
@@ -169,14 +169,14 @@
         Generalizing that, applying the interest is simply <tt>Balance = Balance * (1 + interest_rate)</tt></p>
 
 	<p>Of course, the interest rate is expressed <i>yearly</i>, so if we want to apply it more frequently -- say, daily -- we have to
-        divide it by the fraction of the year that has passed.  The daily interest rate is just <tt>1/365</tt> of the yearly interest
+        divide it by the fraction of the year that has passed. The daily interest rate is just <tt>1/365</tt> of the yearly interest
         rate.  So each day, we would do <tt>Balance = Balance * (1 + interest_rate / 365)</tt>.</p>
 
 	<p>But doing that 365 times would be tedious.  To simplify that, we note that we're just doing that
-         multiplication 365 times per year.  Which we could express as <tt>(1 + interest_rate / 365)</tt> raised to the power of 365.
+         multiplication 365 times per year. Which we could express as <tt>(1 + interest_rate / 365)</tt> raised to the power of 365.
         So one year of daily compound interest is thus:
         <blockquote><tt>Balance = Balance * (1 + interest_rate / 365)<sup>365</sup></tt>.</blockquote>
-	And that's it for basic compounding.  Thus, a 5% interest rate, compounded daily, would result in a
+	And that's it for basic compounding. Thus, a 5% interest rate, compounded daily, would result in a
         <tt>(1 + 0.05/365)<sup>365</sup> = 5.127%</tt> APY.
       </div>
     </div>
@@ -192,7 +192,8 @@
 	</div>
    <div class="row" style="margin-top: 2%;">
    <div class="twelve columns">
-<p>Code and page Copyright &copy;2016-2025 David G. Andersen.  Please send bug or feedback reports to me <a href="https://bsky.app/profile/daveandersen.bsky.social">on bsky</a>.
+<p>Code and page Copyright &copy;2016-2025 David G. Andersen.
+	<br />Code available on <a href="https://github.com/dave-andersen/web-finance">GitHub</a>. (Please send bug reports there.)
 </p>
    </div>
    </div>
